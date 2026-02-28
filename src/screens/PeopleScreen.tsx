@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
 	View,
-	ScrollView,
 	Text,
 	TextInput,
 	TouchableOpacity,
@@ -13,15 +12,10 @@ import {
 	Keyboard,
 	TouchableWithoutFeedback,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import {
-	Plus,
-	Star,
-	Trash2,
-	Search,
-	ChevronRight,
-} from 'lucide-react-native';
+import { Plus, Search } from 'lucide-react-native';
 
 import type { RootStackParamList } from '../navigation/types';
 import type { PersonMet } from '../types/types';
@@ -34,6 +28,7 @@ import { Colors, Spacing, Radius } from '../theme/colors';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import Typography from '../components/Typography';
+import PersonListItem from '../components/PersonListItem';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -169,65 +164,13 @@ const PeopleScreen: React.FC = () => {
 				)}
 
 				{sortedPeople.map((person) => (
-					<TouchableOpacity
+					<PersonListItem
 						key={person.id}
-						onPress={() =>
-							navigation.navigate('PersonDetail', { personId: person.id })
-						}
-						activeOpacity={0.7}
-					>
-						<Card variant="base" style={styles.personCard}>
-							<View style={styles.personRow}>
-								<View style={{ flex: 1 }}>
-									<View style={styles.nameRow}>
-										<Typography variant="subtitle">{person.name}</Typography>
-										{person.isFavorite && (
-											<Star
-												size={14}
-												color={Colors.amber400}
-												fill={Colors.amber400}
-											/>
-										)}
-									</View>
-									{person.whereMet && (
-										<Typography variant="caption" tone="muted">
-											Met at {person.whereMet}
-										</Typography>
-									)}
-									{person.tags && person.tags.length > 0 && (
-										<View style={styles.tagRow}>
-											{person.tags.slice(0, 3).map((tag) => (
-												<View key={tag} style={styles.tag}>
-													<Text style={styles.tagText}>{tag}</Text>
-												</View>
-											))}
-										</View>
-									)}
-								</View>
-								<View style={styles.personActions}>
-									<TouchableOpacity
-										onPress={() => toggleFavorite(person.id)}
-										hitSlop={8}
-									>
-										<Star
-											size={18}
-											color={
-												person.isFavorite ? Colors.amber400 : Colors.gray300
-											}
-											fill={person.isFavorite ? Colors.amber400 : 'transparent'}
-										/>
-									</TouchableOpacity>
-									<TouchableOpacity
-										onPress={() => removePerson(person.id, person.name)}
-										hitSlop={8}
-									>
-										<Trash2 size={16} color={Colors.red400} />
-									</TouchableOpacity>
-									<ChevronRight size={16} color={Colors.gray400} />
-								</View>
-							</View>
-						</Card>
-					</TouchableOpacity>
+						person={person}
+						onPress={() => navigation.navigate('PersonDetail', { personId: person.id })}
+						onToggleFavorite={() => toggleFavorite(person.id)}
+						onRemove={() => removePerson(person.id, person.name)}
+					/>
 				))}
 			</ScrollView>
 
@@ -364,37 +307,14 @@ const styles = StyleSheet.create({
 	sortRow: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+		marginTop: 8,
 		marginBottom: 10,
 	},
-	list: { paddingBottom: 100, gap: 10 },
+	list: { paddingBottom: 100, gap: 0 },
 	empty: {
 		alignItems: 'center',
 		paddingVertical: 40,
 	},
-	personCard: { padding: 14 },
-	personRow: {
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	nameRow: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 6,
-	},
-	personActions: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 12,
-	},
-	tagRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6 },
-	tag: {
-		backgroundColor: Colors.amber100,
-		borderRadius: Radius.full,
-		paddingHorizontal: 8,
-		paddingVertical: 2,
-	},
-	tagText: { fontSize: 10, color: Colors.amber700 },
-
 	// Modal
 	modalOverlay: {
 		flex: 1,

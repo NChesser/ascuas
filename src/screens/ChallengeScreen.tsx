@@ -68,7 +68,7 @@ const ChallengeScreen: React.FC = () => {
 
             {/* Main challenge card */}
             <Card variant="elevated">
-                <Typography variant="title" style={{ marginBottom: 8 }}>
+                <Typography variant="title">
                     {challenge.title}
                 </Typography>
                 <View style={styles.divider} />
@@ -157,12 +157,11 @@ const styles = StyleSheet.create({
     tierText: { fontSize: 12, fontWeight: '500' },
     heartsRow: { flexDirection: 'row', gap: 2 },
     divider: {
-        height: 1,
-        backgroundColor: Colors.amber100,
-        marginVertical: 12,
+        borderBottomWidth: 2, borderBottomColor: Colors.amber200, marginVertical: 8
     },
     hintBox: {
-        marginTop: 16,
+        marginTop: 20,
+        marginBottom: 10,
         backgroundColor: Colors.sky50,
         borderWidth: 1,
         borderColor: Colors.sky200,
