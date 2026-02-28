@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { RectButton } from 'react-native-gesture-handler';
 import { Star, Trash2, ChevronRight } from 'lucide-react-native';
 
 import type { PersonMet } from '../types/types';
@@ -19,8 +20,8 @@ const ACTION_WIDTH = 140; // total width of both action buttons
 
 const PersonListItem: React.FC<PersonListItemProps> = ({
     person,
-    onPress,
     onToggleFavorite,
+    onPress,
     onRemove,
 }) => {
     const swipeableRef = useRef < Swipeable > (null);
@@ -82,7 +83,7 @@ const PersonListItem: React.FC<PersonListItemProps> = ({
             rightThreshold={40}
             overshootRight={false}
         >
-            <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+            <RectButton onPress={onPress} underlayColor={Colors.amber50}>
                 <Card variant="base" style={styles.card}>
                     <View style={styles.row}>
                         <View style={{ flex: 1 }}>
@@ -101,7 +102,7 @@ const PersonListItem: React.FC<PersonListItemProps> = ({
                         <ChevronRight size={16} color={Colors.gray300} />
                     </View>
                 </Card>
-            </TouchableOpacity>
+            </RectButton>
         </Swipeable>
     );
 };
